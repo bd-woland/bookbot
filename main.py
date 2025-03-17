@@ -1,45 +1,29 @@
+import sys
+
+from stats import count_characters, count_words, filter_alnum_keys, sort_by_value
+
 def get_file_contents(path):
     with open(path) as f:
         return f.read()
 
-def count_words(string):
-    return len(string.split())
-
-def count_characters(string):
-    count_by_char = {}
-
-    for char in string.lower():
-        if (char in count_by_char):
-            count_by_char[char] += 1
-        else:
-            count_by_char[char] = 1
-    
-    return count_by_char
-
 def print_report(path, word_count, count_by_char):
-    print(f'--- Begin report of {path} ---')
-    print(f'{word_count} words found in the document')
-    print()
+    print('============ BOOKBOT ============')
+    print(f'--- Analyzing book found at {path} ---')
+    print('----------- Word Count ----------')
+    print(f'Found {word_count} total words')
+    print('--------- Character Count -------')
     for char, char_count in count_by_char.items():
-        print(f'The \'{char}\' character was found {char_count} times')
-
-def is_alnum_key(item):
-    key, value = item
-
-    return key.isalpha()
-
-def filter_alnum_keys(dictionary):
-    return dict(filter(is_alnum_key, dictionary.items()))
-
-def sort_by_value(dictionary, reverse = True):
-    return dict(sorted(
-        dictionary.items(),
-        key = lambda item : item[1],
-        reverse = reverse
-    ))
+        print(f'{char}: {char_count}')
+        
+    print('============= END ===============')
 
 def main():
-    path = 'books/frankenstein.txt'
+    if len(sys.argv) < 2:
+        print('Usage: python3 main.py <path_to_book>')
+
+        sys.exit(1)
+
+    path = sys.argv[1]
 
     file_contents = get_file_contents(path)
 
